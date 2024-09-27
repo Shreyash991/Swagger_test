@@ -3,11 +3,10 @@ const { body, param, validationResult } = require('express-validator');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
-// Initialize the app
 const app = express();
 app.use(express.json());
 
-// In-memory user store
+//create user list
 let users_list = [];
 
 // Swagger Setup
@@ -60,7 +59,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.post(
   '/users',
   [
-    body('name').trim().notEmpty().withMessage('Name is required'), // Sanitization + Validation
+    body('name').trim().notEmpty().withMessage('Name is required'), // For performing validation and sanitation job
     body('email').isEmail().withMessage('Valid email is required'),
   ],
   (req, res) => {
@@ -90,7 +89,7 @@ app.post(
  *         description: User ID
  *     responses:
  *       200:
- *         description: The requested user
+ *         description: The requested user is found
  *       404:
  *         description: User not found
  */
