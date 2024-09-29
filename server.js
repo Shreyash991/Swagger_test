@@ -153,6 +153,49 @@ app.put(
 /**
  * @swagger
  * /users/{id}:
+ *   patch:
+ *     summary: Partially update a user by ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: false
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User is successfully updated
+ *       404:
+ *         description: User is not found
+ */
+app.patch('/users/:id', (req, res) => {
+  const user = users_list.find(u => u.id == req.params.id);
+  if (!user) {
+    return res.status(404).json({ message: 'User is not found' });
+  }
+
+  const { name, email } = req.body;
+  if (name) user.name = name;
+  if (email) user.email = email;
+
+  res.json(user);
+});
+
+
+
+/**
+ * @swagger
+ * /users/{id}:
  *   delete:
  *     summary: Delete a user by ID
  *     parameters:
@@ -180,4 +223,5 @@ app.delete('/users/:id', (req, res) => {
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Server running on http://159.223.176.225:${PORT}/docs`));
+
 
